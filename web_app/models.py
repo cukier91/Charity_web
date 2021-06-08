@@ -14,7 +14,7 @@ class CategoryModel(models.Model):
 
 class InstitutionModel(models.Model):
     name = models.CharField(max_length=500)
-    description = models.TextField(null=True)
+    description = models.TextField(blank=True)
     type = models.CharField(max_length=50, choices=Type.choices, default=Type.foundation)
     category = models.ManyToManyField(CategoryModel)
 
@@ -29,6 +29,6 @@ class DonationModel(models.Model):
     zip_code = models.CharField(max_length=20)
     pick_up_date = models.DateField(null=False)
     pick_up_time = models.TimeField(null=False)
-    pick_up_comment = models.TextField(null=True)
+    pick_up_comment = models.TextField(blank=True)
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
