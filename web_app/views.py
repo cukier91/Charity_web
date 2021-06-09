@@ -6,6 +6,7 @@ from django.db.models import Count, Sum
 
 class LandingPage(View):
     def get(self, request, *args, **kwargs):
+        foundation = InstitutionModel.objects.all()
         bags = DonationModel.objects.aggregate(
             total=Sum('quantity'),
             institution=Count('pk')
@@ -13,9 +14,11 @@ class LandingPage(View):
         context = {
             'total': bags[0]['total'],
             'institution': bags[0]['institution'],
+            'foundation_id_1': foundation.filter(type=Type.foundation),
+            'foundation_id_2': foundation.filter(type=Type.non_gov_organization),
+            'foundation_id_3': foundation.filter(type=Type.local_donation)
 
         }
-
 
         return render(request, 'web_app/index.html', context)
 
