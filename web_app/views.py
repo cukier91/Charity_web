@@ -1,7 +1,12 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.views.generic import View
-from web_app.models import *
+from django.urls import reverse_lazy
+from django.views.generic import View, FormView, CreateView
+
+from web_app.forms import CreateUserForm
+from web_app.models import DonationModel, InstitutionModel, Type
 from django.db.models import Count, Sum
+from django.core.paginator import Paginator
 
 
 class LandingPage(View):
@@ -34,6 +39,24 @@ class Login(View):
         return render(request, 'web_app/login.html')
 
 
+# class Register(View):
+#     def get(self, request, *args, **kwargs):
+#         return render(request, 'web_app/register.html')
+
+
 class Register(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'web_app/register.html')
+    # TODO poprawić logowanie na brak USERNAME sam e-mail
+    def get(self, request):
+        form = CreateUserForm()
+        return render(request, 'web_app/register.html', {'form': form})
+
+    def post(self, request):
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/login')
+        else:
+            error = "Niepowodzenie, spróbuj ponownie"
+            return render(request, 'web_app/register.html', {'form': CreateUserForm, 'error': error})
+
+
