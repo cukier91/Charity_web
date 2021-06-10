@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
 class Type(models.TextChoices):
     foundation = "Fundacja", "Fundacja"
     non_gov_organization = "Organizacja pozarządowa", "Organizacja pozarządowa"

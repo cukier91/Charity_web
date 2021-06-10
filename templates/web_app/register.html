@@ -1,29 +1,39 @@
 {% extends "web_app/base.html" %}
 {% load static %}
 {% block content %}
-    </header>
 
+    </header>
     <section class="login-page">
       <h2>Załóż konto</h2>
-      <form>
+      <form method="POST">
+          {% csrf_token %}
         <div class="form-group">
-          <input type="text" name="name" placeholder="Imię" />
+            <p><label for="id_first_name">{{ form.username }}</label></p>
+
         </div>
-         <div class="form-group">
-          <input type="text" name="surname" placeholder="Nazwisko" />
+          <div class="form-group">
+              {{ form.first_name }}
+          </div>
+          <div class="form-group">
+              {{ form.last_name }}
+          </div>
+          <div class="form-group">
+              {{ form.email }}
+          </div>
+          <div class="form-group">
+              {{ form.password1 }}<br>
+              <label class="form-group">Podaj hasło</label>
+          </div>
+          <div class="form-group">
+              {{ form.password2 }}<br>
+              <label class="form-group">Powtórz hasło</label>
         </div>
-        <div class="form-group">
-          <input type="email" name="email" placeholder="Email" />
-        </div>
-        <div class="form-group">
-          <input type="password" name="password" placeholder="Hasło" />
-        </div>
-        <div class="form-group">
-          <input type="password" name="password2" placeholder="Powtórz hasło" />
-        </div>
+          <div class="form-group">
+              <h4>{{ error }}</h4>
+          </div>
 
         <div class="form-group form-group--buttons">
-          <a href="login.html" class="btn btn--without-border">Zaloguj się</a>
+          <a href="{% url 'login_page' %}" class="btn btn--without-border">Zaloguj się</a>
           <button class="btn" type="submit">Załóż konto</button>
         </div>
       </form>
@@ -64,4 +74,5 @@
         </div>
       </div>
     </footer>
+
 {% endblock %}
