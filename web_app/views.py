@@ -8,7 +8,7 @@ from web_app.models import DonationModel, InstitutionModel, Type
 from django.db.models import Count, Sum
 from django.core.paginator import Paginator
 
-
+# TODO dodawać możliwość dla funfacji więcej niż jedna kategoria
 class LandingPage(View):
     def get(self, request, *args, **kwargs):
         foundation = InstitutionModel.objects.all()
@@ -34,6 +34,7 @@ class AddDonation(View):
 
 
 class Login(View):
+
     def get(self, request, *args, **kwargs):
 
         return render(request, 'web_app/login.html')
@@ -45,7 +46,7 @@ class Login(View):
 
 
 class Register(View):
-    # TODO poprawić logowanie na brak USERNAME sam e-mail
+    # TODO poprawić sign up na brak USERNAME sam e-mail
     def get(self, request):
         form = CreateUserForm()
         return render(request, 'web_app/register.html', {'form': form})
