@@ -7,9 +7,11 @@ from django.urls import reverse_lazy
 from django.views.generic import View, FormView, CreateView
 
 from web_app.forms import CreateUserForm
-from web_app.models import DonationModel, InstitutionModel, Type
+from web_app.models import DonationModel, InstitutionModel, Type, CategoryModel
 from django.db.models import Count, Sum
 from django.core.paginator import Paginator
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
+
 
 
 # TODO dodawać możliwość dla funfacji więcej niż jedna kategoria
@@ -33,9 +35,21 @@ class LandingPage(View):
         return render(request, 'web_app/index.html', context)
 
 
-class AddDonation(View):
+class AddDonation(LoginRequiredMixin, View):
+    login_url = '/login'
+
     def get(self, request, *args, **kwargs):
-        return render(request, 'web_app/form.html')
+        category = CategoryModel.objects.all()
+        # form = CreateUserForm()
+        return render(request, 'web_app/form.html', {'category': category})
+
+    # def post(self, request, *args, **kwargs):
+    #     form = CreateUserForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()
+    #
+    #     else:
+    #         return redirect('register_page')
 
 
 class Login(LoginView):
@@ -47,7 +61,6 @@ class Login(LoginView):
         return render(request, 'web_app/login.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
-
         form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)

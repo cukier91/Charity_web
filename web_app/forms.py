@@ -1,7 +1,6 @@
 from django import forms
-
 from django.contrib.auth.forms import UserCreationForm
-from web_app.models import User
+from web_app.models import User, CategoryModel
 
 
 class CreateUserForm(UserCreationForm):
@@ -14,4 +13,13 @@ class CreateUserForm(UserCreationForm):
             'last_name': forms.TextInput(attrs={'placeholder': "Podaj nazwisko.."}),
             'email': forms.EmailInput(attrs={'placeholder': "e-mail.."}),
 
+        }
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = CategoryModel
+        fields = ['name']
+        widgets = {
+            'name': forms.CheckboxSelectMultiple
         }
