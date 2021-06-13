@@ -12,9 +12,22 @@
     <header>
       <nav class="container container--70">
         <ul class="nav--actions">
-          <li><a href="{% url 'login_page' %}">Zaloguj</a></li>
+
+               {% if request.user.id == None %}
+                <li><a href="{% url 'login_page' %}">Zaloguj</a></li>
           <li class="highlighted"><a href="{% url 'register_page' %}">Załóż konto</a></li>
+                {% else %}
+          <li class="logged-user">
+              Witaj, {{ request.user.first_name }}
+            <ul class="dropdown">
+              <li><a href="#">Profil</a></li>
+              <li><a href="#">Ustawienia</a></li>
+              <li><a href="{% url 'logout_page' %}">Wyloguj</a></li>
+            </ul>
+          </li>
+            {% endif %}
         </ul>
+      <br>
 
         <ul>
             <li><a href="/">Start</a></li>
