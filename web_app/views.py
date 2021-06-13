@@ -1,3 +1,5 @@
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -33,20 +35,28 @@ class AddDonation(View):
         return render(request, 'web_app/form.html')
 
 
-class Login(View):
+class Login(LoginView):
+    template_name = 'web_app/login.html'
+    redirect_authenticated_user = LandingPage
 
     def get(self, request, *args, **kwargs):
+        form = AuthenticationForm
+        return render(request, 'web_app/login.html', {'form': form})
 
-        return render(request, 'web_app/login.html')
+    def post(self, request, *args, **kwargs):
+
+        form = self.get_form()
+        if form.is_valid():
+            return redirect('/')
+        else:
+            return redirect('/register')
 
 
-# class Register(View):
-#     def get(self, request, *args, **kwargs):
-#         return render(request, 'web_app/register.html')
+class Logout(LogoutView):
+    next_page = '/login'
 
 
 class Register(View):
-    # TODO poprawić sign up na brak USERNAME sam e-mail
     def get(self, request):
         form = CreateUserForm()
         return render(request, 'web_app/register.html', {'form': form})

@@ -1,4 +1,5 @@
 from django import forms
+
 from django.contrib.auth.forms import UserCreationForm
 from web_app.models import User
 
@@ -14,4 +15,3 @@ class CreateUserForm(UserCreationForm):
             'email': forms.EmailInput(attrs={'placeholder': "e-mail.."}),
 
         }
-
