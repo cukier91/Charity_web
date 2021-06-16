@@ -58,12 +58,18 @@ class Type(models.TextChoices):
 class CategoryModel(models.Model):
     name = models.CharField(max_length=500)
 
+    def __str__(self):
+        return self.name
+
 
 class InstitutionModel(models.Model):
     name = models.CharField(max_length=500)
     description = models.TextField(blank=True)
     type = models.CharField(max_length=50, choices=Type.choices, default=Type.foundation)
     category = models.ManyToManyField(CategoryModel)
+
+    def __str__(self):
+        return self.name
 
 
 class DonationModel(models.Model):
@@ -78,4 +84,4 @@ class DonationModel(models.Model):
     pick_up_time = models.TimeField(null=False)
     pick_up_comment = models.TextField(blank=True)
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-#
+

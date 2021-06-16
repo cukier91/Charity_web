@@ -6,12 +6,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import View, FormView, CreateView
 
-from web_app.forms import CreateUserForm
+from web_app.forms import CreateUserForm, DonationForm
 from web_app.models import DonationModel, InstitutionModel, Type, CategoryModel
 from django.db.models import Count, Sum
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
-
 
 
 # TODO dodawać możliwość dla funfacji więcej niż jedna kategoria
@@ -39,18 +38,20 @@ class AddDonation(LoginRequiredMixin, View):
     login_url = '/login'
 
     def get(self, request, *args, **kwargs):
-        category = CategoryModel.objects.all()
-        # form = CreateUserForm()
-        return render(request, 'web_app/form.html', {'category': category})
+        category = InstitutionModel.objects.all()
+        form = DonationForm()
+        ctx = {
+            'category': category,
+            'form': form,
+        }
+        return render(request, 'web_app/form.html', ctx)
 
-    # def post(self, request, *args, **kwargs):
-    #     form = CreateUserForm(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #
-    #     else:
-    #         return redirect('register_page')
-
+    def post(self, request, *args, **kwargs):
+        form = DonationForm(request.POST)
+        if form.is_valid():
+            form.save()
+        else:
+            return redirect('register_page')
 
 class Login(LoginView):
     template_name = 'web_app/login.html'

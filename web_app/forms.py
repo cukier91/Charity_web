@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from web_app.models import User, CategoryModel
+from web_app.models import User, DonationModel
 
 
 class CreateUserForm(UserCreationForm):
@@ -16,10 +16,11 @@ class CreateUserForm(UserCreationForm):
         }
 
 
-class CategoryForm(forms.ModelForm):
+class DonationForm(forms.ModelForm):
     class Meta:
-        model = CategoryModel
-        fields = ['name']
+        model = DonationModel
+        fields = '__all__'
         widgets = {
-            'name': forms.CheckboxSelectMultiple
+            'categories': forms.CheckboxSelectMultiple,
+            'institution': forms.RadioSelect
         }
