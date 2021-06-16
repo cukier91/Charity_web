@@ -53,6 +53,7 @@ class AddDonation(LoginRequiredMixin, View):
         else:
             return redirect('register_page')
 
+
 class Login(LoginView):
     template_name = 'web_app/login.html'
     redirect_authenticated_user = LandingPage
