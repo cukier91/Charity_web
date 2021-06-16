@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import View, FormView, CreateView
 
 from web_app.forms import CreateUserForm, DonationForm
-from web_app.models import DonationModel, InstitutionModel, Type, CategoryModel
+from web_app.models import DonationModel, InstitutionModel, Type, CategoryModel, User
 from django.db.models import Count, Sum
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
@@ -89,3 +89,13 @@ class Register(View):
             return render(request, 'web_app/register.html', {'form': CreateUserForm, 'error': error})
 
 
+class UserPage(View):
+    def get(self, request, pk, *args, **kwargs):
+        if pk is not request.user.id:
+            return redirect('/')
+        else:
+            user = User.objects.filter(id=pk)
+            context = {
+                'user': user
+            }
+            return render(request, 'web_app/user.html', context)
