@@ -23,4 +23,6 @@ urlpatterns = [
     path('donation/', v.AddDonation.as_view(), name="donation_page"),
     path('login/', v.Login.as_view(), name="login_page"),
     path('register/', v.Register.as_view(), name="register_page"),
+    path('logout/', v.Logout.as_view(), name="logout_page"),
+    path('user/<int:pk>/', v.UserPage.as_view(), name="user_page")
 ]

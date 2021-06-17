@@ -1,0 +1,21 @@
+{% extends "web_app/base.html" %}
+{% load static %}
+{% block content %}
+
+      <div class="slogan container container--90">
+        <div class="slogan--item">
+            {% for u in user %}
+          <h1>
+              Imię użytkownika: <b>{{ u.first_name }}</b><br/>
+              Nazwisko użytkownika: <b>{{ u.last_name }}</b><br/>
+              e-mail użytkownika: <b>{{ u.email}}</b><br/>
+          </h1>
+
+    {% endfor %}
+    </header>
+
+
+    </footer>
+
+    <script src="{% static 'js/app.js' %}"></script>
+{% endblock %}
