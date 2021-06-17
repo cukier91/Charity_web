@@ -95,7 +95,12 @@ class UserPage(View):
             return redirect('/')
         else:
             user = User.objects.filter(id=pk)
+            donation = DonationModel.objects.filter(user_id=pk)
+            bags = DonationModel.objects.filter(user_id=pk).aggregate(
+                total=Sum('quantity'))
             context = {
-                'user': user
+                'user': user,
+                'donation': donation,
+                'total': bags['total']
             }
             return render(request, 'web_app/user.html', context)
