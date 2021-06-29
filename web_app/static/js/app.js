@@ -140,6 +140,7 @@ document.addEventListener("DOMContentLoaded", function() {
     new FormSelect(el);
   });
 
+
   /**
    * Hide elements when clicked on document
    */
@@ -248,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const category = document.getElementById('categories_2')
       const user = document.getElementById('id_user')
       const quantity = document.getElementById('id_quantity')
-      const institution = document.getElementById('institution_1')
+      const institution = document.getElementsByName('institution')
       const address = document.getElementById('id_address')
       const city = document.getElementById('id_city')
       const postcode = document.getElementById('id_zip_code')
@@ -258,10 +259,12 @@ document.addEventListener("DOMContentLoaded", function() {
       const info = document.getElementById('id_pick_up_comment')
       const token = document.getElementsByName('csrfmiddlewaretoken')[0]
 
+
+
       const fd = new FormData()
         fd.append('categories', category.value)
         fd.append('quantity', quantity.value)
-        fd.append('institution', institution.value)
+        // fd.append('institution', institution.value)
         fd.append('address', address.value)
         fd.append('city', city.value)
         fd.append('zip_code', postcode.value)
@@ -270,6 +273,15 @@ document.addEventListener("DOMContentLoaded", function() {
         fd.append('pick_up_time', time.value)
         fd.append('pick_up_comment', info.value)
         fd.append('user', user.value)
+
+      let i = 0;
+      institution.forEach((cb) =>{
+        if (cb.checked){
+          fd.append('institution', institution[i].value)
+          i ++
+        }
+
+      })
 
 
       fetch('/donation/', {
