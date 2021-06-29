@@ -42,8 +42,9 @@ class AddDonation(LoginRequiredMixin, FormView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
+        institution = InstitutionModel.objects.all()
         form = DonationForm(initial={'user': user.id})
-        return render(request, 'web_app/form.html', {'form': form})
+        return render(request, 'web_app/form.html', {'form': form, 'institution': institution})
 
     def form_invalid(self, form):
         response = super().form_invalid(form)
@@ -53,6 +54,7 @@ class AddDonation(LoginRequiredMixin, FormView):
             return response
 
     def form_valid(self, form):
+
         response = super().form_valid(form)
         if self.request.is_ajax():
             form.save()
