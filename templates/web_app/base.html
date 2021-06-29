@@ -20,9 +20,9 @@
           <li class="logged-user">
               Witaj, {{ request.user.first_name }}
             <ul class="dropdown">
-              <li><a href="/user/{{ request.user.id }}">Profil</a></li>
+              <li><a href="/user/">Profil</a></li>
               <li><a href="#">Ustawienia</a></li>
-                {% if request.user.is_superuser == True %}
+                {% if request.user.is_superuser%}
                     <li><a href="/admin">Panel administratora</a></li>
                     {% endif %}
               <li><a href="{% url 'logout_page' %}">Wyloguj</a></li>
@@ -47,5 +47,6 @@
 
 
     {% endblock %}
+
     </body>
 </html>

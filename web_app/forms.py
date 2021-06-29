@@ -22,5 +22,8 @@ class DonationForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'categories': forms.CheckboxSelectMultiple,
-            'institution': forms.RadioSelect
+            'institution': forms.RadioSelect,
+            # 'pick_up_time': forms.TimeInput,
+            # 'pick_up_comment': forms.TextInput,
+
         }
