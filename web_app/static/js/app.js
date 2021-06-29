@@ -244,12 +244,74 @@ document.addEventListener("DOMContentLoaded", function() {
      */
     submit(e) {
       e.preventDefault();
+      const form = document.getElementById('p-form')
+      const category = document.getElementById('categories_2')
+      const user = document.getElementById('id_user')
+      const quantity = document.getElementById('id_quantity')
+      const institution = document.getElementById('institution_1')
+      const address = document.getElementById('id_address')
+      const city = document.getElementById('id_city')
+      const postcode = document.getElementById('id_zip_code')
+      const phone = document.getElementById('id_phone_no')
+      const data = document.getElementById('id_pick_up_date')
+      const time = document.getElementById('id_pick_up_time')
+      const info = document.getElementById('id_pick_up_comment')
+      const token = document.getElementsByName('csrfmiddlewaretoken')[0]
+
+      const fd = new FormData()
+        fd.append('categories', category.value)
+        fd.append('quantity', quantity.value)
+        fd.append('institution', institution.value)
+        fd.append('address', address.value)
+        fd.append('city', city.value)
+        fd.append('zip_code', postcode.value)
+        fd.append('phone_no', phone.value)
+        fd.append('pick_up_date', data.value)
+        fd.append('pick_up_time', time.value)
+        fd.append('pick_up_comment', info.value)
+        fd.append('user', user.value)
+
+
+      fetch('/donation/', {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': token.value,
+          },
+          body: fd
+        })
+            .then(response => response.json())
+            .then(result => {
+              console.log(fd)
+              console.log('Success:', result);
+            })
+            .catch(error => {
+              console.log('Error:', error);
+            })
       this.currentStep++;
       this.updateForm();
+
+
+
+
+      // form.addEventListener('submit', e => {
+      //   e.preventDefault()
+      //
+      //
+      //
+      //
+      // })
     }
+
   }
+
   const form = document.querySelector(".form--steps");
   if (form !== null) {
     new FormSteps(form);
   }
+
 });
+
+

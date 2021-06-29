@@ -4,16 +4,17 @@
 
     <div class="slogan container container--90">
         <div class="slogan--item">
-            {% for u in user %}
+
                 <h1>
-                    Imię użytkownika: <b>{{ u.first_name }}</b><br/>
-                    Nazwisko użytkownika: <b>{{ u.last_name }}</b><br/>
-                    e-mail użytkownika: <b>{{ u.email }}</b><br/>
+                    Imię użytkownika: <b>{{ user.first_name }}</b><br/>
+                    Nazwisko użytkownika: <b>{{ user.last_name }}</b><br/>
+                    e-mail użytkownika: <b>{{ user.email }}</b><br/>
 
                     przekazałeś łącznie worków: <b>{{ total }} szt.</b> Dziękujemy !
                 </h1>
                 <br>
                 <h1>
+                <u>Twoja dotychczasowa pomoc</u>
                 {% for d in donation %}
 
                     <li>Przekazano worków: <b>{{ d.quantity }}</b><br>
@@ -23,7 +24,7 @@
                     </li>
                 {% endfor %}
 
-            {% endfor %}
+
             </h1>
     </header>
 
