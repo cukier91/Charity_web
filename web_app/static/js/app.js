@@ -193,14 +193,29 @@ document.addEventListener("DOMContentLoaded", function() {
      * All events that are happening in form
      */
     events() {
+      const hidder = document.getElementsByName('category')
+      const category = document.getElementsByName('categories')
+
       // Next step
       this.$next.forEach(btn => {
         btn.addEventListener("click", e => {
           e.preventDefault();
           this.currentStep++;
           this.updateForm();
+
+
+      category.forEach((e) =>{
+        if (e.checked){
+         hidder.forEach((f) =>{
+           if(f.id !== e.value){
+             f.parentElement.hidden = true
+           }
+         })
+        }
+      })
         });
       });
+
 
       // Previous step
       this.$prev.forEach(btn => {
@@ -245,8 +260,7 @@ document.addEventListener("DOMContentLoaded", function() {
      */
     submit(e) {
       e.preventDefault();
-      const form = document.getElementById('p-form')
-      const category = document.getElementById('categories_2')
+      const category = document.getElementsByName('categories')
       const user = document.getElementById('id_user')
       const quantity = document.getElementById('id_quantity')
       const institution = document.getElementsByName('institution')
@@ -259,12 +273,8 @@ document.addEventListener("DOMContentLoaded", function() {
       const info = document.getElementById('id_pick_up_comment')
       const token = document.getElementsByName('csrfmiddlewaretoken')[0]
 
-
-
       const fd = new FormData()
-        fd.append('categories', category.value)
         fd.append('quantity', quantity.value)
-        // fd.append('institution', institution.value)
         fd.append('address', address.value)
         fd.append('city', city.value)
         fd.append('zip_code', postcode.value)
@@ -274,14 +284,29 @@ document.addEventListener("DOMContentLoaded", function() {
         fd.append('pick_up_comment', info.value)
         fd.append('user', user.value)
 
+            let count = 0;
+      category.forEach((e) =>{
+        if (e.checked){
+          fd.append('categories', category[count].value)
+          count++
+        }
+        else{
+            count++
+          }
+      })
+
       let i = 0;
       institution.forEach((cb) =>{
         if (cb.checked){
           fd.append('institution', institution[i].value)
           i ++
         }
+        else{
+          i++
+        }
 
       })
+
 
 
       fetch('/donation/', {
