@@ -1,7 +1,7 @@
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import View, FormView, CreateView
@@ -34,24 +34,33 @@ class LandingPage(View):
         return render(request, 'web_app/index.html', context)
 
 
-class AddDonation(LoginRequiredMixin, View):
+class AddDonation(LoginRequiredMixin, FormView):
     login_url = '/login'
+    form_class = DonationForm
+    template_name = 'web_app/form.html'
+    success_url = '/donation/'
 
     def get(self, request, *args, **kwargs):
-        category = InstitutionModel.objects.all()
-        form = DonationForm()
-        ctx = {
-            'category': category,
-            'form': form,
-        }
-        return render(request, 'web_app/form.html', ctx)
+        user = request.user
+        institution = InstitutionModel.objects.filter(category__gt=-1)
+        form = DonationForm(initial={'user': user.id})
+        return render(request, 'web_app/form.html', {'form': form, 'institution': institution})
 
-    def post(self, request, *args, **kwargs):
-        form = DonationForm(request.POST)
-        if form.is_valid():
-            form.save()
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        if self.request.is_ajax():
+            return JsonResponse(form.errors, status=400)
         else:
-            return redirect('register_page')
+            return response
+
+    def form_valid(self, form):
+
+        response = super().form_valid(form)
+        if self.request.is_ajax():
+            form.save()
+            return redirect('/')
+        else:
+            return response
 
 
 class Login(LoginView):
@@ -90,12 +99,16 @@ class Register(View):
 
 
 class UserPage(View):
-    def get(self, request, pk, *args, **kwargs):
-        if pk is not request.user.id:
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
             return redirect('/')
         else:
-            user = User.objects.filter(id=pk)
+            user = request.user
+            donation = DonationModel.objects.filter(user=user)
+            bags = DonationModel.objects.filter(user=user).aggregate(
+                total=Sum('quantity'))
             context = {
-                'user': user
+                'donation': donation,
+                'total': bags['total']
             }
             return render(request, 'web_app/user.html', context)
