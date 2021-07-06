@@ -42,7 +42,7 @@ class AddDonation(LoginRequiredMixin, FormView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        institution = InstitutionModel.objects.all()
+        institution = InstitutionModel.objects.filter(category__gt=-1)
         form = DonationForm(initial={'user': user.id})
         return render(request, 'web_app/form.html', {'form': form, 'institution': institution})
 
