@@ -250,7 +250,6 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$stepInstructions[0].parentElement.parentElement.hidden = this.currentStep >= 6;
       this.$step.parentElement.hidden = this.currentStep >= 6;
 
-      // TODO: get data from inputs and show them in summary
     }
 
     /**
@@ -352,3 +351,52 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+const category = document.getElementsByName('categories')
+const user = document.getElementById('id_user')
+const quantity = document.getElementById('id_quantity')
+const institution = document.getElementsByName('institution')
+const address = document.getElementById('id_address')
+const city = document.getElementById('id_city')
+const postcode = document.getElementById('id_zip_code')
+const phone = document.getElementById('id_phone_no')
+const data = document.getElementById('id_pick_up_date')
+const time = document.getElementById('id_pick_up_time')
+const info = document.getElementById('id_pick_up_comment')
+
+
+const street = document.getElementById("street")
+const city_l = document.getElementById('city_l')
+const code = document.getElementById('code')
+const phone_l = document.getElementById('phone')
+const bags = document.getElementById('bags')
+const foundation = document.getElementById('foundation')
+const data_l = document.getElementById('data')
+const time_l = document.getElementById('time')
+const info_l = document.getElementById('info')
+
+
+arr = []
+function myFunction() {
+  street.innerHTML = address.value
+  code.innerHTML = postcode.value
+  phone_l.innerHTML = phone.value
+  city_l.innerHTML = city.value
+  data_l.innerHTML = data.value
+  time_l.innerHTML = time.value
+  info_l.innerHTML = info.value
+  bags.innerHTML = quantity.value
+
+
+    let i = 0;
+      institution.forEach((cb) =>{
+        if (cb.checked){
+          arr.push(institution[i].value)
+          i ++
+        }
+        else{
+          i++
+        }
+
+      })
+   foundation.innerHTML = document.getElementById(`institution_name_${arr[0]}`).innerText
+}
